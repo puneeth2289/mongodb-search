@@ -13,7 +13,7 @@ const getWorkshops = ( req, res, next ) => {
 
     Workshop.find(query, function (err, docs) {
         if (err){
-            console.log(err);
+           // console.log(err);
         }
         else{
             console.log("First function call : ", docs);
