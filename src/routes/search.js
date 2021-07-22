@@ -5,12 +5,9 @@ const {
     getWorkshops
 } = require( '../controllers/search' );
 
+
 const router = express.Router();
 
-console.log('hereee');
-
-router.get( '/', getWorkshops );
-
-
+router.get('/',getWorkshops);
 
 module.exports = router;
