@@ -4,7 +4,11 @@ var nameSchema = new mongoose.Schema({
     discussionId: {
         type:String
     },
-    message :
+    _id:
+    {
+        type: String
+    },
+    name :
     {
         type :String
     },
@@ -41,4 +45,4 @@ var nameSchema = new mongoose.Schema({
     }
 });
 
-mongoose.model( 'searchTxt', nameSchema ,'post');
+mongoose.model( 'searchTxt', nameSchema ,'topic');

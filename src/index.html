@@ -1,55 +1,44 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-body {
-  font-family: Arial;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-form.example input[type=text] {
-  padding: 10px;
-  font-size: 17px;
-  border: 1px solid grey;
-  float: left;
-  width: 80%;
-  background: #f1f1f1;
-}
-
-form.example button {
-  float: left;
-  width: 20%;
-  padding: 10px;
-  background: #2196F3;
-  color: white;
-  font-size: 17px;
-  border: 1px solid grey;
-  border-left: none;
-  cursor: pointer;
-}
-
-form.example button:hover {
-  background: #0b7dda;
-}
-
-form.example::after {
-  content: "";
-  clear: both;
-  display: table;
-}
-</style>
-</head>
-<body>
-
-<form action="http://localhost:3000/customobjectdata" method="GET" style="margin:auto;max-width:300px">
-  <input type="text" placeholder="Search.." name="param">
-  <button type="submit"><i class="fa fa-search"></i></button>
-</form>
-
-</body>
-</html> 
+    <head>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+        <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    </head>
+    <body>
+        <div class="ui-widget">
+            <label for="recipe">Recipe:</label><br />
+            <input id="recipe">
+            <ul id="ingredients"></ul>
+        </div>
+        <script>
+          $(document).ready(function () {
+              $("#recipe").autocomplete({
+                  source: async function(request, response) {
+                      let data = await fetch(`http://localhost:3000/search?${request.term}`)
+                          .then(results => results.json())
+                          .then(results => results.map(result => {
+                              return { label: result.name, value: result.name, id: result._id };
+                          }));
+                      response(data);
+                  },
+                  minLength: 2,
+                  select: function(event, ui) {
+                      console.log(ui);
+                      fetch(`http://localhost:3000/${ui.item.id}`)
+                          .then(result => result.json())
+                          .then(result => {
+                              console.log(result);
+                             // $("#ingredients").empty();
+                              //result.referenceType.forEach(ingredient => {
+                                  $("#ingredients").append(`<li>${result.referenceType}</li>`);
+                                  $("#ingredients").append(`<li>${result.createdBy}</li>`);
+                                  $("#ingredients").append(`<li>${result.location}</li>`);
+                              //});
+                          });
+                  }
+              });
+          });
+      </script>
+    </body>
+</html>

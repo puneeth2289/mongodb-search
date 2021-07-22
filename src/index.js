@@ -8,19 +8,23 @@ const path = require('path');
 const router = express.Router();
 const bodyParser = require('body-parser');
 const searchRouter = require( './routes/search' );
+const getIdRouter = require( './routes/getId' );
+
 
 
 app.use(express.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); 
 
-app.set( 'view engine', 'pug' );
-app.set( 'views', path.join( process.cwd(), 'views' ) );
 
 router.get('/',function(req,res){
   res.sendFile(path.join(__dirname+'/index.html'));
 });
 
-app.use('/customobjectdata',searchRouter);
+//app.use('/customobjectdata',searchRouter);
+
+app.use('/search', searchRouter);
+app.use('/:id', getIdRouter);
+
 
 //add the router
 app.use('/', router);
